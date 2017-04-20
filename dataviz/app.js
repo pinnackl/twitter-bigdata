@@ -1,17 +1,18 @@
 $( document ).ready(function() {
     $.getJSON( "twitter.json", function( data ) {
         var json = data;
-        // for (var i=0 ; i < json.test.length -1 ; i++){
-        //     for(var j=i+1 ; j < json.test.length ; j++){
-        //         if(json.test[i].text == json.test[j].text){
-        //             json.test.splice(j,1);
-        //         }
-        //     }
-        // }
+        for (var i=0 ; i < json.test.length -1 ; i++){
+            for(var j=i+1 ; j < json.test.length ; j++){
+                if(json.test[i].text == json.test[j].text){
+                    json.test.splice(j,1);
+                }
+            }
+        }
 
         var arrayWords = {};
         var arrayLanguages = {};
         var arrayLocations = {};
+        var arrayRetweets = {};
         var uselessWords = ['to', 'of', 'el', 'the', 'or', 'is', 'at', 'on', 'in', 'rt', 'you', 'when', 'that', 'and', 'be', 'for', 'we', 'are', 'an', 'have', 'will', 'this', 'wwwiii', 'worldwar', 'ww', 'world', 'war', 'us', 'it', 'third', 'has', 'its', 'he', 'north', 'do', 'already', 'as', 'by', 'was', 'get', 'about', 'with', 'from', 'out', 'from', 'amp', 'if', 'would', 'into', 'says'];
         for (var i = 0; i < json.test.length; i++) {
 
@@ -53,7 +54,16 @@ $( document ).ready(function() {
               }
             }
 
-
+            //RETWEETS
+            if (json.test[i].retweeted_count != 0){
+              if ((typeof arrayRetweets["retweetedTweets"] != "undefined")&&(typeof arrayRetweets["numberOfRetweets"] != "undefined")){
+                arrayRetweets["numberOfretweetedTweets"] += 1;
+                arrayRetweets["numberOfRetweets"] += json.test[i].retweeted_count;
+              } else {
+                arrayRetweets["numberOfretweetedTweets"] = 1;
+                arrayRetweets["numberOfRetweets"] = json.test[i].retweeted_count;
+              }
+            }
         }
 
         //SORT WORDS
@@ -77,8 +87,8 @@ $( document ).ready(function() {
         sortableLocations.sort(function(a, b) {
             return b[1] - a[1];
         });
-        
-        console.log(sortableLocations);
+
+        //console.log(sortableLocations);
 
         //SORT LANGUAGES
         var sortableLanguages = [];
@@ -92,6 +102,9 @@ $( document ).ready(function() {
 
         //console.log(sortableLanguages);
 
+
+        //RETWEETS
+        console.log(arrayRetweets);
 
 
         //console.log(arrayLocations);
