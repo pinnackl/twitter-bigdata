@@ -59,38 +59,38 @@ $( document ).ready(function() {
         //SORT WORDS
         var sortableWords = [];
         for (var word in arrayWords) {
-            sortable.push([word, arrayWords[word]]);
+            sortableWords.push([word, arrayWords[word]]);
         }
 
         sortableWords.sort(function(a, b) {
             return b[1] - a[1];
         });
 
-        console.log(sortableWords);
+        //console.log(sortableWords);
 
         //SORT LOCATIONS
         var sortableLocations = [];
         for (var location in arrayLocations) {
-            sortable.push([location, arrayLocations[location]]);
+            sortableLocations.push([location, arrayLocations[location]]);
         }
-        
+
         sortableLocations.sort(function(a, b) {
             return b[1] - a[1];
         });
-
+        
         console.log(sortableLocations);
 
         //SORT LANGUAGES
         var sortableLanguages = [];
         for (var language in arrayLanguages) {
-            sortable.push([language, arrayLanguages[language]]);
+            sortableLanguages.push([language, arrayLanguages[language]]);
         }
 
         sortableLanguages.sort(function(a, b) {
             return b[1] - a[1];
         });
 
-        console.log(sortableLanguages);
+        //console.log(sortableLanguages);
 
 
 
