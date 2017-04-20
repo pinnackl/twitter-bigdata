@@ -11,14 +11,18 @@ $( document ).ready(function() {
 
         var arrayWords = {};
         var arrayLanguages = {};
+        var arrayLocations = {};
         var uselessWords = ['to', 'of', 'el', 'the', 'or', 'is', 'at', 'on', 'in', 'rt', 'you', 'when', 'that', 'and', 'be', 'for', 'we', 'are', 'an', 'have', 'will', 'this', 'wwwiii', 'worldwar', 'ww', 'world', 'war', 'us', 'it', 'third', 'has', 'its', 'he', 'north', 'do', 'already', 'as', 'by', 'was', 'get', 'about', 'with', 'from', 'out', 'from', 'amp', 'if', 'would', 'into', 'says'];
-        for (var i = 0; i < 10/*json.test.length*/; i++) { 
+        for (var i = 0; i < json.test.length; i++) {
+
+            //LANGUAGES
             if (typeof arrayLanguages[json.test[i].lang] != "undefined") {
                 arrayLanguages[json.test[i].lang] += 1;
             } else {
                 arrayLanguages[json.test[i].lang] = 1;
             }
-            
+
+            //TEXT
             if ( typeof json.test[i].text != "undefined" ) {
                 var cleanText = json.test[i].text.replace(/[|&;$%#':^@"-<>?[()+,.]/g, "");
                 var text = cleanText.split(" ");
@@ -30,7 +34,7 @@ $( document ).ready(function() {
                         } else {
                             var n = cleanText.match(re).length;
                         }
-                        
+
                         if(typeof arrayWords[text[j]] != "undefined") {
                             arrayWords[text[j]] = arrayWords[text[j]] + n;
                         } else {
@@ -39,20 +43,62 @@ $( document ).ready(function() {
                     }
                 }
             }
+
+            //LOCATIONS
+            if (json.test[i].user.location.trim().length != 0){
+              if (typeof arrayLocations[json.test[i].user.location] != "undefined"){
+                arrayLocations[json.test[i].user.location] += 1;
+              } else {
+                arrayLocations[json.test[i].user.location] = 1;
+              }
+            }
+
+
         }
-        var sortable = [];
+
+        //SORT WORDS
+        var sortableWords = [];
         for (var word in arrayWords) {
             sortable.push([word, arrayWords[word]]);
         }
 
-        sortable.sort(function(a, b) {
+        sortableWords.sort(function(a, b) {
             return b[1] - a[1];
         });
 
-        console.log(arrayLanguages);
+        console.log(sortableWords);
+
+        //SORT LOCATIONS
+        var sortableLocations = [];
+        for (var location in arrayLocations) {
+            sortable.push([location, arrayLocations[location]]);
+        }
+        
+        sortableLocations.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+
+        console.log(sortableLocations);
+
+        //SORT LANGUAGES
+        var sortableLanguages = [];
+        for (var language in arrayLanguages) {
+            sortable.push([language, arrayLanguages[language]]);
+        }
+
+        sortableLanguages.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+
+        console.log(sortableLanguages);
+
+
+
+        //console.log(arrayLocations);
         // for(var i = 0; i < 20; i++) {
         //     console.log(sortable[i]);
         // }
+
     })
     .done(function() { console.log('getJSON request succeeded!'); })
     .fail(function(jqXHR, textStatus, errorThrown) { console.log('getJSON request failed! ' + errorThrown); })
