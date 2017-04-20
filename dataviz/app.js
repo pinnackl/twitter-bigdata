@@ -1,6 +1,7 @@
 $( document ).ready(function() {
     $.getJSON( "twitter.json", function( data ) {
         var json = data;
+        //console.log("Number Of Tweets : " + json.test.length);
         for (var i=0 ; i < json.test.length -1 ; i++){
             for(var j=i+1 ; j < json.test.length ; j++){
                 if(json.test[i].text == json.test[j].text){
@@ -8,11 +9,13 @@ $( document ).ready(function() {
                 }
             }
         }
+        //console.log("Number Of Unique Tweets : " + json.test.length);
 
         var arrayWords = {};
         var arrayLanguages = {};
         var arrayLocations = {};
         var arrayRetweets = {};
+        var arrayFollowers = {};
         var uselessWords = ['to', 'of', 'el', 'the', 'or', 'is', 'at', 'on', 'in', 'rt', 'you', 'when', 'that', 'and', 'be', 'for', 'we', 'are', 'an', 'have', 'will', 'this', 'wwwiii', 'worldwar', 'ww', 'world', 'war', 'us', 'it', 'third', 'has', 'its', 'he', 'north', 'do', 'already', 'as', 'by', 'was', 'get', 'about', 'with', 'from', 'out', 'from', 'amp', 'if', 'would', 'into', 'says'];
         for (var i = 0; i < json.test.length; i++) {
 
@@ -56,11 +59,11 @@ $( document ).ready(function() {
 
             //RETWEETS
             if (json.test[i].retweeted_count != 0){
-              if ((typeof arrayRetweets["retweetedTweets"] != "undefined")&&(typeof arrayRetweets["numberOfRetweets"] != "undefined")){
-                arrayRetweets["numberOfretweetedTweets"] += 1;
+              if ((typeof arrayRetweets["numberOfRetweetedTweets"] != "undefined")&&(typeof arrayRetweets["numberOfRetweets"] != "undefined")){
+                arrayRetweets["numberOfRetweetedTweets"] += 1;
                 arrayRetweets["numberOfRetweets"] += json.test[i].retweeted_count;
               } else {
-                arrayRetweets["numberOfretweetedTweets"] = 1;
+                arrayRetweets["numberOfRetweetedTweets"] = 1;
                 arrayRetweets["numberOfRetweets"] = json.test[i].retweeted_count;
               }
             }
@@ -104,13 +107,30 @@ $( document ).ready(function() {
 
 
         //RETWEETS
-        console.log(arrayRetweets);
+        //console.log(arrayRetweets);
 
 
-        //console.log(arrayLocations);
-        // for(var i = 0; i < 20; i++) {
-        //     console.log(sortable[i]);
-        // }
+        //FOLLOWERS
+        for (var i=0 ; i < json.test.length -1 ; i++){
+            for(var j=i+1 ; j < json.test.length ; j++){
+                if(json.test[i].user.id_str == json.test[j].user.id_str){
+                    json.test.splice(j,1);
+                }
+            }
+        }
+        //console.log("Number Of Unique Accounts : " + json.test.length);
+        for (var i = 0; i < json.test.length; i++) {
+          if (json.test[i].user.followers_count != 0){
+            if ((typeof arrayFollowers["numberOfAccountsWithFollowers"] != "undefined")&&(typeof arrayFollowers["numberOfFollowers"] != "undefined")){
+              arrayFollowers["numberOfAccountsWithFollowers"] += 1;
+              arrayFollowers["numberOfFollowers"] += json.test[i].user.followers_count;
+            } else {
+              arrayFollowers["numberOfAccountsWithFollowers"] = 1;
+              arrayFollowers["numberOfFollowers"] = json.test[i].user.followers_count;
+            }
+          }
+        }
+        //console.log(arrayFollowers);
 
     })
     .done(function() { console.log('getJSON request succeeded!'); })
